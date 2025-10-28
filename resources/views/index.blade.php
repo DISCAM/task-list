@@ -24,7 +24,7 @@
 
 @section('content')
     @forelse($tasks as $task)
-        <p><a href="{{ route('tasks.shown', ['id' => $task->id]) }}">zadanie tytuł : {{ $task->title }}</a></p>
+        <p><a href="{{ route('tasks.show', ['task' => $task->id]) }}">zadanie tytuł : {{ $task->title }}</a></p>
     @empty
         <p>Brak taska</p>
     @endforelse

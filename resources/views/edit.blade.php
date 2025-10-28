@@ -1,8 +1,7 @@
 
-
 @extends('layouts.layouts')
 
-@section('title', 'Add task')
+@section('title', 'Edit task')
 
 @section('styles')
     <style>
@@ -20,14 +19,15 @@
         {{ $errors }}
     @endif
 
-    <form method="POST" action="{{ route('tasks.store') }}">
-    @csrf
+    <form method="POST" action="{{ route('tasks.update', ['task' => $task->id]) }}">
+        @csrf
+        @method('PUT')
         <div>
             <label for="title">
                 Title
             </label>
             <input
-                value="{{ old('title') }}"
+                value="{{ $task->title }}"
                 type="text"
                 name="title"
                 id="title" />
@@ -40,14 +40,13 @@
                 Description
             </label>
             <textarea
-            id="description"
-            name="description"
-            rows="5"
-            placeholder="wprowadź tekst"
+                id="description"
+                name="description"
+                rows="5"
+                placeholder="wprowadź tekst"
             >
-            {{ old('description') }}
+                {{ $task->description }}
             </textarea>
-
             @error('description')
             <p class="error_style"> brak danych dla pola description </p>
             @enderror
@@ -62,13 +61,14 @@
                 rows="10"
                 placeholder="wprowadź tekst"
             >
-                {{ old('long_description') }}
+                {{ $task->long_description }}
             </textarea>
             @error('long_description')
             <p class="error_style"> brak danych dla pola long description </p>
             @enderror
         </div>
-        <button type="submit">Zapisz</button>
+        <button type="submit">Zapisz </button>
     </form>
 
 @endsection
+
