@@ -47,14 +47,10 @@ Route::get('xxx', function (){
     return redirect()->route('hello');
 });
 
-Route::post('/tasks', function (Request $request){
+Route::post('/tasks', function (TaskRequest $request){
     //dd($request->all());
 
-    $data = $request->validate([
-        'title' => 'required|max:255',
-        'description' => 'required',
-        'long_description' => 'required'
-    ]);
+    $data = $request->validated();
 
     $task = new Task();
     $task->title = $data['title'];
