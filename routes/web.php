@@ -1,8 +1,9 @@
 <?php
 
+
 use App\Http\Requests\TaskRequest;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
+
 use App\Models\Task;
 
 Route::get('/', function (){
@@ -11,9 +12,8 @@ Route::get('/', function (){
 
 Route::get('/tasks', function () {
     return view('index', [
-        //'tasks' => \App\Models\Task::all(),
-        //'tasks' => \App\Models\Task::latest()->where('completed',true)->get(),
-        'tasks' => Task::latest()->get(),
+
+        'tasks' => Task::query()->latest()->get(),
     ]);
 })->name('tasks.index');
 
@@ -48,37 +48,24 @@ Route::get('xxx', function (){
 });
 
 Route::post('/tasks', function (TaskRequest $request){
-    //dd($request->all());
 
-    $data = $request->validated();
-
-    $task = new Task();
-    $task->title = $data['title'];
-    $task->description = $data['description'];
-    $task->long_description = $data['long_description'];
-
-    $task->save();
+    $task = Task::query()->create($request->validated());
 
     return redirect()->route('tasks.show', ['task' => $task->id])
         ->with('success', 'udało się dodać rekord' );
-})->name('tasks.store');
+    })->name('tasks.store');
 
 Route::put('/tasks/{task}', function (Task $task , TaskRequest $request){
-    //dd($request->all());
-
-    $data = $request->validated();
-
-    $task->title = $data['title'];
-    $task->description = $data['description'];
-    $task->long_description = $data['long_description'];
-
-    $task->save();
-
-    return redirect()->route('tasks.show', ['task' => $task->id])
+   $task->update($request->validated());
+   return redirect()->route('tasks.show', ['task' => $task->id])
         ->with('success', 'udało się zaktualizować rekord' );
+    })->name('tasks.update');
 
-
-})->name('tasks.update');
+Route::delete('tasks/{task}', function (Task $task){
+   $task->delete();
+   return redirect()->route('tasks.index')
+       ->with('success', 'usunięto z sukcesem ');
+})->name('tasks.destroy');
 
 Route::fallback(function (){
    return 'Still got somewhere';

@@ -21,6 +21,18 @@
         <a href="{{ route('tasks.index') }}">Powrót</a>
     </p>
 
+    <div>
+        <form method="POST" action="{{ route('tasks.destroy' , ['task' => $task->id]) }}">
+            @csrf
+            @method('DELETE')
+
+         <button type="submit" >usun </button>
+
+
+        </form>
+    </div>
+
+
 @endsection
 
 
